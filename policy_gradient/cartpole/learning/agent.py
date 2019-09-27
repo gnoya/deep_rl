@@ -34,7 +34,7 @@ class Agent():
         R = 0
         policy_loss = []
         returns = []
-        
+
         # Monte carlo
         for r in self.rewards[::-1]:
             R = r + self.gamma * R
