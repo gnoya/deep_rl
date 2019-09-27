@@ -7,10 +7,9 @@ class DQN(nn.Module):
     def __init__(self, batch_size, learning_rate, input, output):
         super(DQN, self).__init__()
 
-        self.hidden1 = nn.Linear(input, 8)
-        self.hidden2 = nn.Linear(8, 16)
-        self.hidden3 = nn.Linear(16, 16)
-        self.hidden4 = nn.Linear(16, output)
+        self.hidden1 = nn.Linear(input, 16)
+        self.hidden2 = nn.Linear(16, 64)
+        self.hidden3 = nn.Linear(64, output)
         
         self.batch_size = batch_size
         self.learning_rate = learning_rate
@@ -21,8 +20,7 @@ class DQN(nn.Module):
     def forward(self, x):
         x = F.relu(self.hidden1(x))
         x = F.relu(self.hidden2(x))
-        x = F.relu(self.hidden3(x))
-        x = self.hidden4(x.view(x.size(0), -1))
+        x = self.hidden3(x.view(x.size(0), -1))
         return F.softmax(x, dim=1)
 
     def backpropagate(self, policy_loss):

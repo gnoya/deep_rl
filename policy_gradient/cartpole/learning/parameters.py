@@ -1,11 +1,11 @@
 # Define Hyper-parameters
 # Neural network
 batch_size = 1
-learning_rate = 0.001
+learning_rate = 0.005
 lr_decay_active = True
-lr_decay = 750
+lr_decay = 500
 
-gamma = 0.9995
+gamma = 0.999
 num_episodes = 100000
 
 # Binary reward

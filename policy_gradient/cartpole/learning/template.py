@@ -28,6 +28,7 @@ def initialize():
 
 def train():
     env, agent = initialize()
+    k = np.array([])
     for episode in range(num_episodes):
         state = env.reset()
         done = False
@@ -46,6 +47,16 @@ def train():
 
             state = next_state
 
+        if(len(k) < 100):
+            k = np.append(k, steps)
+        else:
+            k = k[1:]
+            k = np.append(k, steps)
+        
+        if np.mean(k) > 195.0 and len(k) == 100:
+            print('Solved in {} episodes'.format(episode - 100))
+            time.sleep(25)
+
         agent.optimize_policy()
 
         if lr_decay_active:
@@ -53,6 +64,7 @@ def train():
 
         print('Steps: {}'.format(steps))
         print('Episode: {}'.format(episode))
+        print('Mean of 100: {}'.format(np.mean(k)))
         print('Learning_rate: {}\n'.format(agent.policy_net.optimizer.param_groups[0]['lr']))
 
 if __name__ == '__main__':
