@@ -1,18 +1,16 @@
 # Define Hyper-parameters
-# Neural network
 batch_size = 1
-learning_rate = 0.005
-lr_decay_active = True
-lr_decay = 500
+# Actor
+actor_learning_rate = 0.001
+actor_lr_decay_active = True
+actor_lr_decay = 2000
 
-gamma = 0.999
+# Critic
+critic_learning_rate = 0.01
+critic_lr_decay_active = True
+critic_lr_decay = 2000
+
+gamma = 0.9995
 num_episodes = 100000
-
-# Binary reward
-binary_reward_active = False
-
-# Frequencies
-# Saving model
-saving_model_freq = 9999999
 
 env_name = 'CartPole-v1'

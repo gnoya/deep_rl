@@ -20,8 +20,8 @@ def initialize():
     env = gym.envs.make(env_name)
 
     # Define policy network
-    actor = Actor(batch_size, learning_rate, 4, 2).to(device).float()
-    critic = Critic(batch_size, learning_rate, 4, 2).to(device).float()
+    actor = Actor(actor_learning_rate, actor_lr_decay, 4, 2).to(device).float()
+    critic = Critic(critic_learning_rate, critic_lr_decay, 4, 1).to(device).float()
 
     agent = Agent(actor, critic, gamma, device)
 
@@ -42,7 +42,13 @@ def train():
 
             action = agent.select_action(state, env)
             next_state, reward, done, _ = env.step(action)
-            reward = reward if not done else -reward
+            reward = reward / 10 if not done else -reward
+
+            value = agent.estimate_value(state)
+            next_value = agent.estimate_value(next_state) if not done else 0
+            advantage = (reward + gamma * next_value) - value
+
+            agent.optimize(advantage)
 
             state = next_state
 
@@ -56,15 +62,17 @@ def train():
             print('Solved in {} episodes'.format(episode - 100))
             time.sleep(25)
 
-        agent.optimize_policy()
-
-        if lr_decay_active:
-            agent.policy_net.learning_rate_decay(episode, lr_decay)
+        if actor_lr_decay_active:
+            agent.actor.learning_rate_decay(episode)
+        if critic_lr_decay_active:
+            agent.critic.learning_rate_decay(episode)
 
         print('Steps: {}'.format(steps))
         print('Episode: {}'.format(episode))
         print('Mean of 100: {}'.format(np.mean(k)))
-        print('Learning_rate: {}\n'.format(agent.policy_net.optimizer.param_groups[0]['lr']))
+        print('Actor learning rate: {}'.format(agent.actor.optimizer.param_groups[0]['lr']))
+        print('Critic learning rate: {}\n'.format(agent.critic.optimizer.param_groups[0]['lr']))
+        
 
 if __name__ == '__main__':
     train()
