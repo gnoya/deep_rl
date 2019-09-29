@@ -7,9 +7,9 @@ class Actor(nn.Module):
     def __init__(self, learning_rate, lr_decay, input, output):
         super(Actor, self).__init__()
 
-        self.hidden1 = nn.Linear(input, 64)
-        self.hidden2 = nn.Linear(64, 128)
-        self.hidden3 = nn.Linear(128, output)
+        self.hidden1 = nn.Linear(input, 32)
+        self.hidden2 = nn.Linear(32, 64)
+        self.hidden3 = nn.Linear(64, output)
         
         self.learning_rate = learning_rate
         self.lr_decay = lr_decay
@@ -39,9 +39,9 @@ class Critic(nn.Module):
     def __init__(self, learning_rate, lr_decay, input, output):
         super(Critic, self).__init__()
 
-        self.hidden1 = nn.Linear(input, 64)
-        self.hidden2 = nn.Linear(64, 128)
-        self.hidden3 = nn.Linear(128, output)
+        self.hidden1 = nn.Linear(input, 32)
+        self.hidden2 = nn.Linear(32, 64)
+        self.hidden3 = nn.Linear(64, output)
         
         self.learning_rate = learning_rate
         self.lr_decay = lr_decay

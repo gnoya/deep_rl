@@ -35,22 +35,26 @@ def train():
         done = False
         env.render()
         steps = 0
-
+        I = 1
         while(not done):
             steps += 1
             env.render()
 
             action = agent.select_action(state, env)
             next_state, reward, done, _ = env.step(action)
-            reward = reward / 10 if not done else -reward
+            reward = 1 if not done else -reward
+            if(steps == 500):
+                reward = 2.0
+                print('Reward 500')
 
             value = agent.estimate_value(state)
             next_value = agent.estimate_value(next_state) if not done else 0
-            advantage = (reward + gamma * next_value) - value
-
-            agent.optimize(advantage)
+            target = (reward + gamma * next_value)
+            advantage = target - value
+            agent.optimize(I * advantage)
 
             state = next_state
+            I *= 1
 
         if(len(k) < 100):
             k = np.append(k, steps)

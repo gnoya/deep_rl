@@ -46,12 +46,7 @@ class Agent():
         critic_loss = []
 
         actor_loss.append(-self.saved_log_probs[0] * advantage.detach())
-        critic_loss.append(advantage)
-        # print(self.saved_values[0])
-        # print('actor loss')
-        # print(actor_loss)
-        # print('critic loss')
-        # print(critic_loss)
+        critic_loss.append(advantage ** 2)
         
         # Backpropagate networks
         self.actor.backpropagate(actor_loss)
@@ -59,5 +54,3 @@ class Agent():
 
         self.saved_log_probs = []
         self.saved_values = []
-        
-        
