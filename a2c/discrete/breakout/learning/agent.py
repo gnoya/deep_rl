@@ -26,6 +26,8 @@ class Agent():
             out = self.actor(state)
         else:
             out = self.actor(state)
+
+        print('Prob: {}'.format(out.detach()))
         m = Categorical(out)
         action = m.sample()
         self.saved_log_probs.append(m.log_prob(action))
