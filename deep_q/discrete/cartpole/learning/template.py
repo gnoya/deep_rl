@@ -72,6 +72,9 @@ def train(args):
             next_state, reward, done, _ = env.step(action)
             reward = reward if not done else -reward
             reward = 0.1 if reward == 1.0 else reward
+            print(next_state.shape)
+            
+
             state = torch.tensor(state)
             action = torch.tensor([[action]])
             reward = torch.tensor([reward])
